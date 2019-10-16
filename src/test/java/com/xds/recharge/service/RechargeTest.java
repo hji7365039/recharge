@@ -10,7 +10,6 @@ public class RechargeTest extends RechargeApplicationTests {
     RechargeService rechargeService;
 
     @Test
-
     public void queryBalanceTest(){
         rechargeService.queryBalance();
     }

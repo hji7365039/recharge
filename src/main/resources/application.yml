@@ -1,5 +1,10 @@
 server:
   port: 8002
+  tomcat:
+    min-spare-threads: 20 #初始化线程是20
+    max-threads: 100 #最大线程数是100
+    # 超时时间
+    connection-timeout: 5000
 
 spring:
   servlet:
@@ -10,12 +15,29 @@ spring:
     name: recharge
 
   datasource:
-    url: jdbc:mysql://rm-m5eg68x6u3172lh4h.mysql.rds.aliyuncs.com:3306/treatdb?useUnicode=true&characterEncoding=utf8&useSSL=false
-    username: treat
-    password: treat_biosan#201801
+    url: jdbc:mysql://47.103.74.81:3306/wsgs?useUnicode=true&characterEncoding=utf8&useSSL=false
+    username: root
+    password: 123456
+    # 使用Druid数据源
+    type: com.alibaba.druid.pool.DruidDataSource
+    druid:
+      filters: stat
+      maxActive: 20
+      initialSize: 1
+      maxWait: 60000
+      minIdle: 1
+      timeBetweenEvictionRunsMillis: 60000
+      minEvictableIdleTimeMillis: 300000
+      validationQuery: select 'x'
+      testWhileIdle: true
+      testOnBorrow: false
+      testOnReturn: false
+      poolPreparedStatements: true
+      maxOpenPreparedStatements: 20
     driver-class-name: com.mysql.jdbc.Driver
     dbcp2:
       validation-query: select 1
+
 
 
 mybatis:

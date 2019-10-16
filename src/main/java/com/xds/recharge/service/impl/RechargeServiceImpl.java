@@ -12,11 +12,10 @@ import org.springframework.web.client.RestTemplate;
 @Service
 public class RechargeServiceImpl implements RechargeService {
 
-
     private static String url="http://39.108.59.67:8160/unicomAync/queryBalance.do";
 
     @Autowired
-    RestTemplate restTemplate;
+    private RestTemplate restTemplate;
 
     @Override
     public void queryBalance(){
