@@ -1,0 +1,28 @@
+server:
+  port: 8002
+
+spring:
+  servlet:
+    multipart:
+      max-request-size: 30MB
+      max-file-size: 30MB
+  application:
+    name: recharge
+
+  datasource:
+    url: jdbc:mysql://rm-m5eg68x6u3172lh4h.mysql.rds.aliyuncs.com:3306/treatdb?useUnicode=true&characterEncoding=utf8&useSSL=false
+    username: treat
+    password: treat_biosan#201801
+    driver-class-name: com.mysql.jdbc.Driver
+    dbcp2:
+      validation-query: select 1
+
+
+mybatis:
+  typeAliasesPackage: cn.xds.recharge.model
+  mapperLocations: classpath:mapper/**/*.xml
+
+
+logging:
+  level:
+    cn.xds.recharge: debug
