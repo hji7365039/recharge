@@ -54,3 +54,10 @@ wx:
   secret: 009025655e21909d94a3dfb123607609
   grant_type: authorization_code
   getAccessTokenUrl: https://api.weixin.qq.com/sns/oauth2/access_token
+
+
+redis:
+  host: 47.103.74.81
+  port: 6379
+  password:
+  database: 0
