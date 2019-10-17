@@ -19,16 +19,10 @@ public class RechargeServiceImpl implements RechargeService {
 
     @Override
     public String queryBalance(){
-
-        QueryBalanceDto dto= new QueryBalanceDto();
-        dto.setUserId("453");
-        String sign="453"+"df41bbb9ee213bdb0e46c2021e572fb392a2a2ce0df5e168422c8a486d62ee29";
+        String sign="990"+"df41bbb9ee213bdb0e46c2021e572fb392a2a2ce0df5e168422c8a486d62ee29";
         sign = DigestUtils.md5Hex(sign.getBytes());
-        System.out.println(sign);
-        dto.setSign(sign);
-        System.out.println(dto);
-        QueryBalanceResponseDto responseDto=restTemplate.postForObject(url,dto,QueryBalanceResponseDto.class);
-        System.out.println(responseDto);
+        String requestUrl=url+"?userId=990&sign="+sign;
+        QueryBalanceResponseDto responseDto=restTemplate.getForObject(requestUrl,QueryBalanceResponseDto.class);
         return responseDto.toString();
     }
 
