@@ -1,6 +1,8 @@
 package com.xds.recharge.service;
 
+import com.xds.recharge.dto.QueryBalanceResponseDto;
+
 public interface RechargeService {
 
-    String queryBalance();
+    QueryBalanceResponseDto queryBalance();
 }

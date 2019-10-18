@@ -18,15 +18,10 @@ public class BaseController {
 
 
     @ResponseBody
-    @RequestMapping(value="answer", method = RequestMethod.GET)
-    public ResponseResult answer(){
-        return ResponseResult.Success();
+    @RequestMapping(value="queryBalance", method = RequestMethod.GET)
+    public ResponseResult queryBalance(){
+        return ResponseResult.Success(rechargeService.queryBalance());
     }
 
 
-    @ResponseBody
-    @RequestMapping(value="querybalance", method = RequestMethod.GET)
-    public String querybalance(){
-        return rechargeService.queryBalance();
-    }
 }

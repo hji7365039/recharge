@@ -9,8 +9,17 @@ public class RechargeTest extends RechargeApplicationTests {
     @Autowired
     RechargeService rechargeService;
 
+    @Autowired
+    SmsService smsService;
+
     @Test
     public void queryBalanceTest(){
         rechargeService.queryBalance();
+    }
+
+
+    @Test
+    public void sendSms(){
+        smsService.sendSms("18072811971","{\"code\":\"1233\"}");
     }
 }

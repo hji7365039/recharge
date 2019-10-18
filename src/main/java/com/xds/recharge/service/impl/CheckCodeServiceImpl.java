@@ -1,6 +1,7 @@
 package com.xds.recharge.service.impl;
 
 import com.xds.recharge.service.CheckCodeService;
+import com.xds.recharge.service.SmsService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
@@ -12,6 +13,9 @@ public class CheckCodeServiceImpl  implements CheckCodeService {
     @Autowired
     private RedisTemplate<String,String> redisTemplate;
 
+    @Autowired
+    SmsService smsService;
+
     @Override
     public boolean saveCheckCode(String mobileNo) {
         try{
@@ -19,6 +23,8 @@ public class CheckCodeServiceImpl  implements CheckCodeService {
             System.out.println("code="+code);
             redisTemplate.opsForValue().set(mobileNo,code);
             System.out.println("放入redis成功");
+            String centent="{\"code\":"+code+"}";
+            smsService.sendSms(mobileNo,centent);
             return true;
         }catch (Exception e){
             System.out.println("存储redis异常"+mobileNo);
