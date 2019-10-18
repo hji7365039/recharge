@@ -3,6 +3,7 @@ package com.xds.recharge.controller;
 
 import com.xds.recharge.common.ResponseResult;
 import com.xds.recharge.service.CheckCodeService;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -18,7 +19,7 @@ public class CheckCodeController {
     @ResponseBody
     @RequestMapping(value="/getCheckCode")
     public ResponseResult getCheckCode(String mobileNo){
-        if(mobileNo==null||mobileNo.equals("")){
+        if(StringUtils.isBlank(mobileNo)){
             return ResponseResult.Error("手机号为空");
         }
         return ResponseResult.Success(checkCodeService.saveCheckCode(mobileNo));
