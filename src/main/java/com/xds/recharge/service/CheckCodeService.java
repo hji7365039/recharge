@@ -4,6 +4,6 @@ public interface CheckCodeService {
 
     boolean saveCheckCode(String mobileNo);
 
-    boolean checkCode(String code,String mobileNo);
+    boolean checkCode(String code, String mobileNo, String openId);
 
 }

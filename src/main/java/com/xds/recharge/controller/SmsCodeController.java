@@ -7,17 +7,18 @@ import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 @Controller
-@RequestMapping(value="/check")
-public class CheckCodeController {
+@RequestMapping(value="/smsCode")
+public class SmsCodeController {
 
     @Autowired
     CheckCodeService checkCodeService;
 
     @ResponseBody
-    @RequestMapping(value="/getCheckCode")
+    @RequestMapping(value="/getSmsCode", method = RequestMethod.GET)
     public ResponseResult getCheckCode(String mobileNo){
         if(StringUtils.isBlank(mobileNo)){
             return ResponseResult.Error("手机号为空");
@@ -27,8 +28,8 @@ public class CheckCodeController {
 
 
     @ResponseBody
-    @RequestMapping(value="/checkCode")
-    public ResponseResult checkCode(String code,String mobileNo){
-        return ResponseResult.Success(checkCodeService.checkCode(code,mobileNo));
+    @RequestMapping(value="/checkSmsCode", method = RequestMethod.GET)
+    public ResponseResult checkCode(String code,String mobileNo, String openid){
+        return ResponseResult.Success(checkCodeService.checkCode(code, mobileNo, openid));
     }
 }

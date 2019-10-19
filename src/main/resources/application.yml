@@ -47,8 +47,8 @@ spring:
       validation-query: select 1
 
 mybatis:
-  typeAliasesPackage: cn.xds.recharge.model
-  mapperLocations: classpath:mapper/**/*.xml
+  typeAliasesPackage: cn.xds.recharge.dto
+  mapperLocations: classpath:mapper/*.xml
 
 logging:
   level:
@@ -57,5 +57,7 @@ logging:
 wx:
   appid: wx29c49905292b67dd
   secret: 009025655e21909d94a3dfb123607609
+  lang: zh_CN
   grant_type: authorization_code
   getAccessTokenUrl: https://api.weixin.qq.com/sns/oauth2/access_token
+  getInfoUrl: https://api.weixin.qq.com/cgi-bin/user/info

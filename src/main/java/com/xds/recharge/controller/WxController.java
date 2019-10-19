@@ -23,9 +23,27 @@ public class WxController {
     @Autowired
     private WxService wxService;
 
+    /**
+     * 获取accessToken
+     * @param code
+     * @return
+     */
     @ResponseBody
     @RequestMapping(value="getAccessToken", method = RequestMethod.GET)
     public JSONObject getAccessToken(String code){
         return wxService.getAccessToken(code);
+    }
+
+
+    /**
+     * openid绑定手机号码
+     * @param openId
+     * @return
+     */
+    @ResponseBody
+    @RequestMapping(value="bindMobileNo", method = RequestMethod.POST)
+    public ResponseResult bindMobileNo(String openId){
+        wxService.bindMobileNo(openId);
+        return ResponseResult.Success();
     }
 }
