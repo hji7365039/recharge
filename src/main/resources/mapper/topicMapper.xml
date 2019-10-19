@@ -1,0 +1,179 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- 
+    Welcome to use the TableGo Tools.
+    
+    http://vipbooks.iteye.com
+    http://blog.csdn.net/vipbooks
+    http://www.cnblogs.com/vipbooks
+    
+    Author:bianj
+    Email:edinsker@163.com
+    Version:5.8.8
+-->
+
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<!-- topic -->
+<mapper namespace="com.xds.recharge.dao.TopicDao">
+    <!-- 结果映射 -->
+    <resultMap id="topicMap" type="com.xds.recharge.model.Topic">
+        <id column="id" property="id" jdbcType="VARCHAR" />
+        <result column="top" property="top" jdbcType="VARCHAR" />
+        <result column="centent" property="centent" jdbcType="VARCHAR" />
+        <result column="orderby" property="orderby" jdbcType="INTEGER" />
+        <result column="choice" property="choice" jdbcType="INTEGER" />
+        <result column="state" property="state" jdbcType="INTEGER" />
+        <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+        <result column="creator" property="creator" jdbcType="VARCHAR" />
+        <result column="update_time" property="updateTime" jdbcType="TIMESTAMP" />
+        <result column="updator" property="updator" jdbcType="VARCHAR" />
+        <result column="remark" property="remark" jdbcType="VARCHAR" />
+    </resultMap>
+    
+    <!-- 表所有字段 -->
+    <sql id="allColumns">
+        id, top, centent, orderby, choice, state,
+        create_time, creator, update_time, updator, remark
+    </sql>
+    
+    <!-- 查询所有数据 -->
+    <select id="findTopicAll" resultMap="topicMap">
+        SELECT
+        <include refid="allColumns" />
+        FROM topic
+        order by orderby
+    </select>
+    
+    <!-- 根据条件查询数据 -->
+    <select id="findTopicByCondition" resultMap="topicMap" parameterType="map">
+        SELECT
+        <include refid="allColumns" />
+        FROM topic WHERE 1 = 1
+        <if test="top != null and top != ''">
+            AND top LIKE CONCAT('%',#{top},'%')
+        </if>
+        <if test="centent != null and centent != ''">
+            AND centent LIKE CONCAT('%',#{centent},'%')
+        </if>
+        <if test="orderby != null">
+            AND orderby = #{orderby}
+        </if>
+        <if test="choice != null">
+            AND choice = #{choice}
+        </if>
+        <if test="state != null">
+            AND state = #{state}
+        </if>
+        <if test="createTime != null">
+            AND create_time = #{createTime}
+        </if>
+        <if test="creator != null and creator != ''">
+            AND creator LIKE CONCAT('%',#{creator},'%')
+        </if>
+        <if test="updateTime != null">
+            AND update_time = #{updateTime}
+        </if>
+        <if test="updator != null and updator != ''">
+            AND updator LIKE CONCAT('%',#{updator},'%')
+        </if>
+        <if test="remark != null and remark != ''">
+            AND remark LIKE CONCAT('%',#{remark},'%')
+        </if>
+    </select>
+    
+    <!-- 根据主键查询数据 -->
+    <select id="findTopicByIds" resultMap="topicMap" parameterType="list">
+        SELECT
+        <include refid="allColumns" />
+        FROM topic WHERE id IN
+        <foreach collection="list" index="index" item="id" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </select>
+    
+    <!-- 插入数据 -->
+    <insert id="insertTopic" parameterType="map">
+        INSERT INTO topic (<include refid="allColumns" />)
+        VALUES (
+            #{id},
+            #{top},
+            #{centent},
+            #{orderby},
+            #{choice},
+            #{state},
+            #{createTime},
+            #{creator},
+            #{updateTime},
+            #{updator},
+            #{remark}
+        )
+    </insert>
+    
+    <!-- 批量插入数据 -->
+    <insert id="insertTopics" parameterType="list">
+        INSERT INTO topic (<include refid="allColumns" />)
+        VALUES (
+        <foreach collection="list" index="index" item="item" separator=",">
+            (
+                #{item.id},
+                #{item.top},
+                #{item.centent},
+                #{item.orderby},
+                #{item.choice},
+                #{item.state},
+                #{item.createTime},
+                #{item.creator},
+                #{item.updateTime},
+                #{item.updator},
+                #{item.remark}
+            )
+        </foreach>
+    </insert>
+    
+    <!-- 修改数据 -->
+    <update id="updateTopic" parameterType="map">
+        UPDATE topic SET
+            top = #{top},
+            centent = #{centent},
+            orderby = #{orderby},
+            choice = #{choice},
+            state = #{state},
+            create_time = #{createTime},
+            creator = #{creator},
+            update_time = #{updateTime},
+            updator = #{updator},
+            remark = #{remark}
+        WHERE id = #{id}
+    </update>
+    
+    <!-- 批量修改数据 -->
+    <update id="updateTopics" parameterType="list">
+        <foreach collection="list" index="index" item="item" separator=";">
+            UPDATE topic SET
+                top = #{item.top},
+                centent = #{item.centent},
+                orderby = #{item.orderby},
+                choice = #{item.choice},
+                state = #{item.state},
+                create_time = #{item.createTime},
+                creator = #{item.creator},
+                update_time = #{item.updateTime},
+                updator = #{item.updator},
+                remark = #{item.remark}
+            WHERE id = #{item.id}
+        </foreach>
+    </update>
+    
+    <!-- 根据主键删除数据 -->
+    <delete id="deleteTopicById" parameterType="string">
+        DELETE FROM topic WHERE id = #{id}
+    </delete>
+    
+    <!-- 根据主键批量删除数据 -->
+    <delete id="deleteTopicByIds" parameterType="list">
+        DELETE FROM topic WHERE id IN
+        <foreach collection="list" index="index" item="id" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+</mapper>

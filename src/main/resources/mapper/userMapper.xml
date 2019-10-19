@@ -1,0 +1,170 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- 
+    Welcome to use the TableGo Tools.
+    
+    http://vipbooks.iteye.com
+    http://blog.csdn.net/vipbooks
+    http://www.cnblogs.com/vipbooks
+    
+    Author:bianj
+    Email:edinsker@163.com
+    Version:5.8.8
+-->
+
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<!-- user -->
+<mapper namespace="com.xds.recharge.dao.UserDao">
+    <!-- 结果映射 -->
+    <resultMap id="userMap" type="com.xds.recharge.model.User">
+        <id column="user_id" property="userId" jdbcType="VARCHAR" />
+        <result column="user_name" property="userName" jdbcType="VARCHAR" />
+        <result column="password" property="password" jdbcType="VARCHAR" />
+        <result column="dept_id" property="deptId" jdbcType="VARCHAR" />
+        <result column="state" property="state" jdbcType="INTEGER" />
+        <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+        <result column="creator" property="creator" jdbcType="VARCHAR" />
+        <result column="update_time" property="updateTime" jdbcType="TIMESTAMP" />
+        <result column="updator" property="updator" jdbcType="VARCHAR" />
+        <result column="remarke" property="remarke" jdbcType="VARCHAR" />
+    </resultMap>
+    
+    <!-- 表所有字段 -->
+    <sql id="allColumns">
+        user_id, user_name, password, dept_id, state, create_time, 
+        creator, update_time, updator, remarke
+    </sql>
+    
+    <!-- 查询所有数据 -->
+    <select id="findUserAll" resultMap="userMap">
+        SELECT
+        <include refid="allColumns" />
+        FROM user
+    </select>
+    
+    <!-- 根据条件查询数据 -->
+    <select id="findUserByCondition" resultMap="userMap" parameterType="map">
+        SELECT
+        <include refid="allColumns" />
+        FROM user WHERE 1 = 1
+        <if test="userName != null and userName != ''">
+            AND user_name LIKE CONCAT('%',#{userName},'%')
+        </if>
+        <if test="password != null and password != ''">
+            AND password LIKE CONCAT('%',#{password},'%')
+        </if>
+        <if test="deptId != null and deptId != ''">
+            AND dept_id LIKE CONCAT('%',#{deptId},'%')
+        </if>
+        <if test="state != null">
+            AND state = #{state}
+        </if>
+        <if test="createTime != null">
+            AND create_time = #{createTime}
+        </if>
+        <if test="creator != null and creator != ''">
+            AND creator LIKE CONCAT('%',#{creator},'%')
+        </if>
+        <if test="updateTime != null">
+            AND update_time = #{updateTime}
+        </if>
+        <if test="updator != null and updator != ''">
+            AND updator LIKE CONCAT('%',#{updator},'%')
+        </if>
+        <if test="remarke != null and remarke != ''">
+            AND remarke LIKE CONCAT('%',#{remarke},'%')
+        </if>
+    </select>
+    
+    <!-- 根据主键查询数据 -->
+    <select id="findUserByIds" resultMap="userMap" parameterType="list">
+        SELECT
+        <include refid="allColumns" />
+        FROM user WHERE user_id IN
+        <foreach collection="list" index="index" item="userId" open="(" separator="," close=")">
+            #{userId}
+        </foreach>
+    </select>
+    
+    <!-- 插入数据 -->
+    <insert id="insertUser" parameterType="map">
+        INSERT INTO user (<include refid="allColumns" />)
+        VALUES (
+            #{userId},
+            #{userName},
+            #{password},
+            #{deptId},
+            #{state},
+            #{createTime},
+            #{creator},
+            #{updateTime},
+            #{updator},
+            #{remarke}
+        )
+    </insert>
+    
+    <!-- 批量插入数据 -->
+    <insert id="insertUsers" parameterType="list">
+        INSERT INTO user (<include refid="allColumns" />)
+        VALUES (
+        <foreach collection="list" index="index" item="item" separator=",">
+            (
+                #{item.userId},
+                #{item.userName},
+                #{item.password},
+                #{item.deptId},
+                #{item.state},
+                #{item.createTime},
+                #{item.creator},
+                #{item.updateTime},
+                #{item.updator},
+                #{item.remarke}
+            )
+        </foreach>
+    </insert>
+    
+    <!-- 修改数据 -->
+    <update id="updateUser" parameterType="map">
+        UPDATE user SET
+            user_name = #{userName},
+            password = #{password},
+            dept_id = #{deptId},
+            state = #{state},
+            create_time = #{createTime},
+            creator = #{creator},
+            update_time = #{updateTime},
+            updator = #{updator},
+            remarke = #{remarke}
+        WHERE user_id = #{userId}
+    </update>
+    
+    <!-- 批量修改数据 -->
+    <update id="updateUsers" parameterType="list">
+        <foreach collection="list" index="index" item="item" separator=";">
+            UPDATE user SET
+                user_name = #{item.userName},
+                password = #{item.password},
+                dept_id = #{item.deptId},
+                state = #{item.state},
+                create_time = #{item.createTime},
+                creator = #{item.creator},
+                update_time = #{item.updateTime},
+                updator = #{item.updator},
+                remarke = #{item.remarke}
+            WHERE user_id = #{item.userId}
+        </foreach>
+    </update>
+    
+    <!-- 根据主键删除数据 -->
+    <delete id="deleteUserById" parameterType="string">
+        DELETE FROM user WHERE user_id = #{userId}
+    </delete>
+    
+    <!-- 根据主键批量删除数据 -->
+    <delete id="deleteUserByIds" parameterType="list">
+        DELETE FROM user WHERE user_id IN
+        <foreach collection="list" index="index" item="userId" open="(" separator="," close=")">
+            #{userId}
+        </foreach>
+    </delete>
+</mapper>

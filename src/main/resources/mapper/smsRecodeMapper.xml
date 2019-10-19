@@ -1,0 +1,146 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- 
+    Welcome to use the TableGo Tools.
+    
+    http://vipbooks.iteye.com
+    http://blog.csdn.net/vipbooks
+    http://www.cnblogs.com/vipbooks
+    
+    Author:bianj
+    Email:edinsker@163.com
+    Version:5.8.8
+-->
+
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<!-- sms_recode -->
+<mapper namespace="com.xds.recharge.dao.SmsRecodeDao">
+    <!-- 结果映射 -->
+    <resultMap id="smsRecodeMap" type="com.xds.recharge.model.SmsRecode">
+        <id column="id" property="id" jdbcType="VARCHAR" />
+        <result column="mobile_no" property="mobileNo" jdbcType="VARCHAR" />
+        <result column="centent" property="centent" jdbcType="VARCHAR" />
+        <result column="state" property="state" jdbcType="INTEGER" />
+        <result column="message_type" property="messageType" jdbcType="INTEGER" />
+        <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+        <result column="update_time" property="updateTime" jdbcType="TIMESTAMP" />
+    </resultMap>
+    
+    <!-- 表所有字段 -->
+    <sql id="allColumns">
+        id, mobile_no, centent, state, message_type, create_time, 
+        update_time
+    </sql>
+    
+    <!-- 查询所有数据 -->
+    <select id="findSmsRecodeAll" resultMap="smsRecodeMap">
+        SELECT
+        <include refid="allColumns" />
+        FROM sms_recode
+    </select>
+    
+    <!-- 根据条件查询数据 -->
+    <select id="findSmsRecodeByCondition" resultMap="smsRecodeMap" parameterType="map">
+        SELECT
+        <include refid="allColumns" />
+        FROM sms_recode WHERE 1 = 1
+        <if test="mobileNo != null and mobileNo != ''">
+            AND mobile_no LIKE CONCAT('%',#{mobileNo},'%')
+        </if>
+        <if test="centent != null and centent != ''">
+            AND centent LIKE CONCAT('%',#{centent},'%')
+        </if>
+        <if test="state != null">
+            AND state = #{state}
+        </if>
+        <if test="messageType != null">
+            AND message_type = #{messageType}
+        </if>
+        <if test="createTime != null">
+            AND create_time = #{createTime}
+        </if>
+        <if test="updateTime != null">
+            AND update_time = #{updateTime}
+        </if>
+    </select>
+    
+    <!-- 根据主键查询数据 -->
+    <select id="findSmsRecodeByIds" resultMap="smsRecodeMap" parameterType="list">
+        SELECT
+        <include refid="allColumns" />
+        FROM sms_recode WHERE id IN
+        <foreach collection="list" index="index" item="id" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </select>
+    
+    <!-- 插入数据 -->
+    <insert id="insertSmsRecode" parameterType="map">
+        INSERT INTO sms_recode (<include refid="allColumns" />)
+        VALUES (
+            #{id},
+            #{mobileNo},
+            #{centent},
+            #{state},
+            #{messageType},
+            #{createTime},
+            #{updateTime}
+        )
+    </insert>
+    
+    <!-- 批量插入数据 -->
+    <insert id="insertSmsRecodes" parameterType="list">
+        INSERT INTO sms_recode (<include refid="allColumns" />)
+        VALUES (
+        <foreach collection="list" index="index" item="item" separator=",">
+            (
+                #{item.id},
+                #{item.mobileNo},
+                #{item.centent},
+                #{item.state},
+                #{item.messageType},
+                #{item.createTime},
+                #{item.updateTime}
+            )
+        </foreach>
+    </insert>
+    
+    <!-- 修改数据 -->
+    <update id="updateSmsRecode" parameterType="map">
+        UPDATE sms_recode SET
+            mobile_no = #{mobileNo},
+            centent = #{centent},
+            state = #{state},
+            message_type = #{messageType},
+            create_time = #{createTime},
+            update_time = #{updateTime}
+        WHERE id = #{id}
+    </update>
+    
+    <!-- 批量修改数据 -->
+    <update id="updateSmsRecodes" parameterType="list">
+        <foreach collection="list" index="index" item="item" separator=";">
+            UPDATE sms_recode SET
+                mobile_no = #{item.mobileNo},
+                centent = #{item.centent},
+                state = #{item.state},
+                message_type = #{item.messageType},
+                create_time = #{item.createTime},
+                update_time = #{item.updateTime}
+            WHERE id = #{item.id}
+        </foreach>
+    </update>
+    
+    <!-- 根据主键删除数据 -->
+    <delete id="deleteSmsRecodeById" parameterType="string">
+        DELETE FROM sms_recode WHERE id = #{id}
+    </delete>
+    
+    <!-- 根据主键批量删除数据 -->
+    <delete id="deleteSmsRecodeByIds" parameterType="list">
+        DELETE FROM sms_recode WHERE id IN
+        <foreach collection="list" index="index" item="id" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+</mapper>

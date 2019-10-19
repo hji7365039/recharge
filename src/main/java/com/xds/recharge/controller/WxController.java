@@ -9,6 +9,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import javax.servlet.http.HttpServletRequest;
+
 @Controller
 @RequestMapping(value="wx")
 public class WxController {
@@ -30,7 +32,7 @@ public class WxController {
      */
     @ResponseBody
     @RequestMapping(value="getAccessToken", method = RequestMethod.GET)
-    public JSONObject getAccessToken(String code){
+    public JSONObject getAccessToken(String code,HttpServletRequest request){
         return wxService.getAccessToken(code);
     }
 

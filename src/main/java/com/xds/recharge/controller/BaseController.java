@@ -24,4 +24,13 @@ public class BaseController {
     }
 
 
+//    @ResponseBody
+//    @RequestMapping(value="recharge", method = RequestMethod.GET)
+//    public ResponseResult recharge(String mobileNo){
+//        String faceValue="1000";
+//        String serialNo=UUID.randomUUID().toString();
+//        return ResponseResult.Success(rechargeService.recharge(mobileNo,faceValue,serialNo));
+//    }
+
+
 }

@@ -1,0 +1,178 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- 
+    Welcome to use the TableGo Tools.
+    
+    http://vipbooks.iteye.com
+    http://blog.csdn.net/vipbooks
+    http://www.cnblogs.com/vipbooks
+    
+    Author:bianj
+    Email:edinsker@163.com
+    Version:5.8.8
+-->
+
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<!-- wsgz_order -->
+<mapper namespace="com.xds.recharge.dao.WsgzOrderDao">
+    <!-- 结果映射 -->
+    <resultMap id="wsgzOrderMap" type="com.xds.recharge.model.WsgzOrder">
+        <id column="id" property="id" jdbcType="VARCHAR" />
+        <result column="open_id" property="openId" jdbcType="VARCHAR" />
+        <result column="wx_name" property="wxName" jdbcType="VARCHAR" />
+        <result column="mobile_no" property="mobileNo" jdbcType="VARCHAR" />
+        <result column="score" property="score" jdbcType="INTEGER" />
+        <result column="state" property="state" jdbcType="INTEGER" />
+        <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+        <result column="creator" property="creator" jdbcType="VARCHAR" />
+        <result column="update_time" property="updateTime" jdbcType="TIMESTAMP" />
+        <result column="updator" property="updator" jdbcType="VARCHAR" />
+        <result column="remark" property="remark" jdbcType="VARCHAR" />
+    </resultMap>
+    
+    <!-- 表所有字段 -->
+    <sql id="allColumns">
+        id, open_id, wx_name, mobile_no, score, state, 
+        create_time, creator, update_time, updator, remark
+    </sql>
+    
+    <!-- 查询所有数据 -->
+    <select id="findWsgzOrderAll" resultMap="wsgzOrderMap">
+        SELECT
+        <include refid="allColumns" />
+        FROM wsgz_order
+    </select>
+    
+    <!-- 根据条件查询数据 -->
+    <select id="findWsgzOrderByCondition" resultMap="wsgzOrderMap" parameterType="map">
+        SELECT
+        <include refid="allColumns" />
+        FROM wsgz_order WHERE 1 = 1
+        <if test="openId != null and openId != ''">
+            AND open_id LIKE CONCAT('%',#{openId},'%')
+        </if>
+        <if test="wxName != null and wxName != ''">
+            AND wx_name LIKE CONCAT('%',#{wxName},'%')
+        </if>
+        <if test="mobileNo != null and mobileNo != ''">
+            AND mobile_no LIKE CONCAT('%',#{mobileNo},'%')
+        </if>
+        <if test="score != null">
+            AND score = #{score}
+        </if>
+        <if test="state != null">
+            AND state = #{state}
+        </if>
+        <if test="createTime != null">
+            AND create_time = #{createTime}
+        </if>
+        <if test="creator != null and creator != ''">
+            AND creator LIKE CONCAT('%',#{creator},'%')
+        </if>
+        <if test="updateTime != null">
+            AND update_time = #{updateTime}
+        </if>
+        <if test="updator != null and updator != ''">
+            AND updator LIKE CONCAT('%',#{updator},'%')
+        </if>
+        <if test="remark != null and remark != ''">
+            AND remark LIKE CONCAT('%',#{remark},'%')
+        </if>
+    </select>
+    
+    <!-- 根据主键查询数据 -->
+    <select id="findWsgzOrderByIds" resultMap="wsgzOrderMap" parameterType="list">
+        SELECT
+        <include refid="allColumns" />
+        FROM wsgz_order WHERE id IN
+        <foreach collection="list" index="index" item="id" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </select>
+    
+    <!-- 插入数据 -->
+    <insert id="insertWsgzOrder" parameterType="map">
+        INSERT INTO wsgz_order (<include refid="allColumns" />)
+        VALUES (
+            #{id},
+            #{openId},
+            #{wxName},
+            #{mobileNo},
+            #{score},
+            #{state},
+            #{createTime},
+            #{creator},
+            #{updateTime},
+            #{updator},
+            #{remark}
+        )
+    </insert>
+    
+    <!-- 批量插入数据 -->
+    <insert id="insertWsgzOrders" parameterType="list">
+        INSERT INTO wsgz_order (<include refid="allColumns" />)
+        VALUES (
+        <foreach collection="list" index="index" item="item" separator=",">
+            (
+                #{item.id},
+                #{item.openId},
+                #{item.wxName},
+                #{item.mobileNo},
+                #{item.score},
+                #{item.state},
+                #{item.createTime},
+                #{item.creator},
+                #{item.updateTime},
+                #{item.updator},
+                #{item.remark}
+            )
+        </foreach>
+    </insert>
+    
+    <!-- 修改数据 -->
+    <update id="updateWsgzOrder" parameterType="map">
+        UPDATE wsgz_order SET
+            open_id = #{openId},
+            wx_name = #{wxName},
+            mobile_no = #{mobileNo},
+            score = #{score},
+            state = #{state},
+            create_time = #{createTime},
+            creator = #{creator},
+            update_time = #{updateTime},
+            updator = #{updator},
+            remark = #{remark}
+        WHERE id = #{id}
+    </update>
+    
+    <!-- 批量修改数据 -->
+    <update id="updateWsgzOrders" parameterType="list">
+        <foreach collection="list" index="index" item="item" separator=";">
+            UPDATE wsgz_order SET
+                open_id = #{item.openId},
+                wx_name = #{item.wxName},
+                mobile_no = #{item.mobileNo},
+                score = #{item.score},
+                state = #{item.state},
+                create_time = #{item.createTime},
+                creator = #{item.creator},
+                update_time = #{item.updateTime},
+                updator = #{item.updator},
+                remark = #{item.remark}
+            WHERE id = #{item.id}
+        </foreach>
+    </update>
+    
+    <!-- 根据主键删除数据 -->
+    <delete id="deleteWsgzOrderById" parameterType="string">
+        DELETE FROM wsgz_order WHERE id = #{id}
+    </delete>
+    
+    <!-- 根据主键批量删除数据 -->
+    <delete id="deleteWsgzOrderByIds" parameterType="list">
+        DELETE FROM wsgz_order WHERE id IN
+        <foreach collection="list" index="index" item="id" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+</mapper>

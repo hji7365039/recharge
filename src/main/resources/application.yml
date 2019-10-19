@@ -61,3 +61,18 @@ wx:
   grant_type: authorization_code
   getAccessTokenUrl: https://api.weixin.qq.com/sns/oauth2/access_token
   getInfoUrl: https://api.weixin.qq.com/cgi-bin/user/info
+
+sms:
+  product: Dysmsapi
+  domain: dysmsapi.aliyuncs.com
+  accessKeyId: LTAI4FpKGd84SPLBLKseEyqZ
+  accessKeySecret: ga6gY5E5tFYQvE3Ft4Svpl12Wmj7bQ
+  signName: 行东上
+  templateCode: SMS_175690135
+
+channel:
+ key: df41bbb9ee213bdb0e46c2021e572fb392a2a2ce0df5e168422c8a486d62ee29
+ account: 990
+ queryBalanceURL: http://39.108.59.67:8160/unicomAync/queryBalance.do
+ rechargeURL: http://39.108.59.67:8160/telephone/buy.do
+

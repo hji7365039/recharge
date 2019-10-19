@@ -42,10 +42,14 @@ public class WxServiceImpl implements WxService {
     public JSONObject getAccessToken(String code) {
         String url = getAccessTokenUrl + "?appid=" + appid + "&secret=" + secret + "&code=" + code + "&grant_type=" + grant_type;
         JSONObject result = JSONObject.parseObject(restTemplate.getForObject(url, String.class));
+        //判断openid是否存在我们库
+
+
+
         WxUserDto wxUser = new WxUserDto();
         wxUser.setId(UUID.randomUUID().toString());
         wxUser.setOpenId(result.getString("openid"));
-        wxDao.insertWxUser(wxUser);
+        //wxDao.insertWxUser(wxUser);
         return result;
     }
 

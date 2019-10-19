@@ -1,0 +1,195 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- 
+    Welcome to use the TableGo Tools.
+    
+    http://vipbooks.iteye.com
+    http://blog.csdn.net/vipbooks
+    http://www.cnblogs.com/vipbooks
+    
+    Author:bianj
+    Email:edinsker@163.com
+    Version:5.8.8
+-->
+
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<!-- recharge_recode -->
+<mapper namespace="com.xds.recharge.dao.RechargeRecodeDao">
+    <!-- 结果映射 -->
+    <resultMap id="rechargeRecodeMap" type="com.xds.recharge.model.RechargeRecode">
+        <id column="id" property="id" jdbcType="VARCHAR" />
+        <result column="order_id" property="orderId" jdbcType="VARCHAR" />
+        <result column="mobile_no" property="mobileNo" jdbcType="VARCHAR" />
+        <result column="amount" property="amount" jdbcType="INTEGER" />
+        <result column="state" property="state" jdbcType="INTEGER" />
+        <result column="notify_state" property="notifyState" jdbcType="INTEGER" />
+        <result column="notify_time" property="notifyTime" jdbcType="TIMESTAMP" />
+        <result column="channel_sell_price" property="channelSellPrice" jdbcType="INTEGER" />
+        <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+        <result column="creator" property="creator" jdbcType="VARCHAR" />
+        <result column="update_time" property="updateTime" jdbcType="TIMESTAMP" />
+        <result column="updator" property="updator" jdbcType="VARCHAR" />
+        <result column="remark" property="remark" jdbcType="VARCHAR" />
+    </resultMap>
+    
+    <!-- 表所有字段 -->
+    <sql id="allColumns">
+        id, order_id, mobile_no, amount, state, notify_state, 
+        notify_time, channel_sell_price, create_time, creator, update_time, updator, 
+        remark
+    </sql>
+    
+    <!-- 查询所有数据 -->
+    <select id="findRechargeRecodeAll" resultMap="rechargeRecodeMap">
+        SELECT
+        <include refid="allColumns" />
+        FROM recharge_recode
+    </select>
+    
+    <!-- 根据条件查询数据 -->
+    <select id="findRechargeRecodeByCondition" resultMap="rechargeRecodeMap" parameterType="map">
+        SELECT
+        <include refid="allColumns" />
+        FROM recharge_recode WHERE 1 = 1
+        <if test="orderId != null and orderId != ''">
+            AND order_id LIKE CONCAT('%',#{orderId},'%')
+        </if>
+        <if test="mobileNo != null and mobileNo != ''">
+            AND mobile_no LIKE CONCAT('%',#{mobileNo},'%')
+        </if>
+        <if test="amount != null">
+            AND amount = #{amount}
+        </if>
+        <if test="state != null">
+            AND state = #{state}
+        </if>
+        <if test="notifyState != null">
+            AND notify_state = #{notifyState}
+        </if>
+        <if test="notifyTime != null">
+            AND notify_time = #{notifyTime}
+        </if>
+        <if test="channelSellPrice != null">
+            AND channel_sell_price = #{channelSellPrice}
+        </if>
+        <if test="createTime != null">
+            AND create_time = #{createTime}
+        </if>
+        <if test="creator != null and creator != ''">
+            AND creator LIKE CONCAT('%',#{creator},'%')
+        </if>
+        <if test="updateTime != null">
+            AND update_time = #{updateTime}
+        </if>
+        <if test="updator != null and updator != ''">
+            AND updator LIKE CONCAT('%',#{updator},'%')
+        </if>
+        <if test="remark != null and remark != ''">
+            AND remark LIKE CONCAT('%',#{remark},'%')
+        </if>
+    </select>
+    
+    <!-- 根据主键查询数据 -->
+    <select id="findRechargeRecodeByIds" resultMap="rechargeRecodeMap" parameterType="list">
+        SELECT
+        <include refid="allColumns" />
+        FROM recharge_recode WHERE id IN
+        <foreach collection="list" index="index" item="id" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </select>
+    
+    <!-- 插入数据 -->
+    <insert id="insertRechargeRecode" parameterType="map">
+        INSERT INTO recharge_recode (<include refid="allColumns" />)
+        VALUES (
+            #{id},
+            #{orderId},
+            #{mobileNo},
+            #{amount},
+            #{state},
+            #{notifyState},
+            #{notifyTime},
+            #{channelSellPrice},
+            #{createTime},
+            #{creator},
+            #{updateTime},
+            #{updator},
+            #{remark}
+        )
+    </insert>
+    
+    <!-- 批量插入数据 -->
+    <insert id="insertRechargeRecodes" parameterType="list">
+        INSERT INTO recharge_recode (<include refid="allColumns" />)
+        VALUES (
+        <foreach collection="list" index="index" item="item" separator=",">
+            (
+                #{item.id},
+                #{item.orderId},
+                #{item.mobileNo},
+                #{item.amount},
+                #{item.state},
+                #{item.notifyState},
+                #{item.notifyTime},
+                #{item.channelSellPrice},
+                #{item.createTime},
+                #{item.creator},
+                #{item.updateTime},
+                #{item.updator},
+                #{item.remark}
+            )
+        </foreach>
+    </insert>
+    
+    <!-- 修改数据 -->
+    <update id="updateRechargeRecode" parameterType="map">
+        UPDATE recharge_recode SET
+            order_id = #{orderId},
+            mobile_no = #{mobileNo},
+            amount = #{amount},
+            state = #{state},
+            notify_state = #{notifyState},
+            notify_time = #{notifyTime},
+            channel_sell_price = #{channelSellPrice},
+            create_time = #{createTime},
+            creator = #{creator},
+            update_time = #{updateTime},
+            updator = #{updator},
+            remark = #{remark}
+        WHERE id = #{id}
+    </update>
+    
+    <!-- 批量修改数据 -->
+    <update id="updateRechargeRecodes" parameterType="list">
+        <foreach collection="list" index="index" item="item" separator=";">
+            UPDATE recharge_recode SET
+                order_id = #{item.orderId},
+                mobile_no = #{item.mobileNo},
+                amount = #{item.amount},
+                state = #{item.state},
+                notify_state = #{item.notifyState},
+                notify_time = #{item.notifyTime},
+                channel_sell_price = #{item.channelSellPrice},
+                create_time = #{item.createTime},
+                creator = #{item.creator},
+                update_time = #{item.updateTime},
+                updator = #{item.updator},
+                remark = #{item.remark}
+            WHERE id = #{item.id}
+        </foreach>
+    </update>
+    
+    <!-- 根据主键删除数据 -->
+    <delete id="deleteRechargeRecodeById" parameterType="string">
+        DELETE FROM recharge_recode WHERE id = #{id}
+    </delete>
+    
+    <!-- 根据主键批量删除数据 -->
+    <delete id="deleteRechargeRecodeByIds" parameterType="list">
+        DELETE FROM recharge_recode WHERE id IN
+        <foreach collection="list" index="index" item="id" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+</mapper>
