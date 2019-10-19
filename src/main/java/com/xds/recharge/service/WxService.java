@@ -9,6 +9,4 @@ public interface WxService {
 
     JSONObject getAccessToken(String code);
 
-    void bindMobileNo(String openId);
-
 }

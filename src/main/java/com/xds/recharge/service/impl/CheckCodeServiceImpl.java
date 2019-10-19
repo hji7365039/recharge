@@ -57,6 +57,7 @@ public class CheckCodeServiceImpl implements CheckCodeService {
             wxUserDto.setOpenId(openid);
             // 绑定手机号码和openId
             wxDao.updateByOpenId(wxUserDto);
+            // TODO 删除验证码
             return true;
         }
     }

@@ -62,10 +62,11 @@ public class WxTest extends RechargeApplicationTests {
      * @return
      */
     public boolean isSubscribe(String token, String openid){
-        String url = getInfoUrl + "?access_token=" + token + "&openid=" + openid + "&lang=" + lang;
-        System.out.println(url);
-        JSONObject result = JSONObject.parseObject(restTemplate.getForObject(url, String.class));
+        JSONObject result = JSONObject.parseObject(restTemplate.getForObject("https://api.weixin.qq.com/cgi-bin/token?grant_type=client_credential&appid=wx29c49905292b67dd&secret=009025655e21909d94a3dfb123607609", String.class));
         System.out.println(result);
+        String url = getInfoUrl + "?access_token=" + result.getString("access_token") + "&openid=" + openid + "&lang=" + lang;
+        System.out.println(url);
+        System.out.println(JSONObject.parseObject(restTemplate.getForObject(url, String.class)));
         return true;
     }
 }

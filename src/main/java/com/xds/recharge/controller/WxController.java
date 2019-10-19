@@ -36,16 +36,4 @@ public class WxController {
         return wxService.getAccessToken(code);
     }
 
-
-    /**
-     * openid绑定手机号码
-     * @param openId
-     * @return
-     */
-    @ResponseBody
-    @RequestMapping(value="bindMobileNo", method = RequestMethod.POST)
-    public ResponseResult bindMobileNo(String openId){
-        wxService.bindMobileNo(openId);
-        return ResponseResult.Success();
-    }
 }

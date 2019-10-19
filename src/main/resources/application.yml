@@ -1,5 +1,5 @@
 server:
-  port: 8002
+  port: 8882
   tomcat:
     min-spare-threads: 20 #初始化线程是20
     max-threads: 100 #最大线程数是100
@@ -61,6 +61,7 @@ wx:
   grant_type: authorization_code
   getAccessTokenUrl: https://api.weixin.qq.com/sns/oauth2/access_token
   getInfoUrl: https://api.weixin.qq.com/cgi-bin/user/info
+  getTokenUrl: https://api.weixin.qq.com/cgi-bin/token
 
 sms:
   product: Dysmsapi

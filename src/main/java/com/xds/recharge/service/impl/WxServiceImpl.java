@@ -32,6 +32,9 @@ public class WxServiceImpl implements WxService {
     @Value("${wx.getInfoUrl}")
     private String getInfoUrl;
 
+    @Value("${wx.getTokenUrl}")
+    private String getTokenUrl;
+
     @Autowired
     private RestTemplate restTemplate;
 
@@ -57,15 +60,13 @@ public class WxServiceImpl implements WxService {
      * 是否订阅
      * @return
      */
-    public boolean isSubscribe(String token, String openid){
-        String url = getInfoUrl + "?access_token=" + token + "&openid=" + openid + "&lang=" + lang;
-        JSONObject result = JSONObject.parseObject(restTemplate.getForObject(url, String.class));
-        System.out.println(result);
-        return true;
+    private boolean isSubscribe(String openid){
+        // 获取公众号token
+        JSONObject result = JSONObject.parseObject(restTemplate.getForObject(getTokenUrl + "?grant_type=client_credential&appid=" + appid + "&secret=" + secret, String.class));
+        String url = getInfoUrl + "?access_token=" + result.getString("access_token") + "&openid=" + openid + "&lang=" + lang;
+        // 判断用户是否订阅
+        result = JSONObject.parseObject(restTemplate.getForObject(url, String.class));
+        return result.getInteger("subscribe") == 1 ? true :false;
     }
 
-    @Override
-    public void bindMobileNo(String openId) {
-
-    }
 }
