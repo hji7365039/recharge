@@ -1,6 +1,5 @@
 package com.xds.recharge.controller;
 
-import com.alibaba.fastjson.JSONObject;
 import com.xds.recharge.common.ResponseResult;
 import com.xds.recharge.service.WxService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -35,5 +34,23 @@ public class WxController {
     public ResponseResult getAccessToken(String code,HttpServletRequest request){
         return ResponseResult.Success(wxService.getAccessToken(code,request)) ;
     }
+
+    /**
+     * 获取accessToken
+     * @return
+     */
+    @ResponseBody
+    @RequestMapping(value="checkUser", method = RequestMethod.GET)
+    public ResponseResult checkUser(HttpServletRequest request){
+        String openid="";
+        if(request.getSession().getAttribute("openid")==null){
+            return ResponseResult.Error("openid为空");
+        }else{
+            openid=(String)request.getSession().getAttribute("openid");
+            return ResponseResult.Success(wxService.checkUser(openid)) ;
+        }
+
+    }
+
 
 }

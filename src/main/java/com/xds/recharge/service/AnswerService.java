@@ -11,7 +11,7 @@ public interface AnswerService {
 
     List<Topic> getAnswer();
 
-    HandInAnswerResponseDto handInAnswer(HandInAnswerDto dto);
+    HandInAnswerResponseDto handInAnswer(HandInAnswerDto dto, String openId);
 
 
 }

@@ -2,6 +2,8 @@ package com.xds.recharge.controller;
 
 
 import com.xds.recharge.common.ResponseResult;
+import com.xds.recharge.dto.RechargeNotifyDto;
+import com.xds.recharge.service.NotifyService;
 import com.xds.recharge.service.RechargeService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -9,12 +11,16 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+
 @Controller
 @RequestMapping("/base")
 public class BaseController {
 
     @Autowired
     RechargeService rechargeService;
+
+    @Autowired
+    NotifyService notifyService;
 
 
     @ResponseBody
@@ -24,6 +30,14 @@ public class BaseController {
     }
 
 
+    @ResponseBody
+    @RequestMapping(value="rechargeNotify", method = RequestMethod.GET)
+    public String rechargeNotify(RechargeNotifyDto dto){
+        System.out.println(dto.toString());
+        notifyService.rechargeNotify(dto);
+        return "success";
+    }
+
 //    @ResponseBody
 //    @RequestMapping(value="recharge", method = RequestMethod.GET)
 //    public ResponseResult recharge(String mobileNo){
@@ -31,6 +45,8 @@ public class BaseController {
 //        String serialNo=UUID.randomUUID().toString();
 //        return ResponseResult.Success(rechargeService.recharge(mobileNo,faceValue,serialNo));
 //    }
+
+
 
 
 

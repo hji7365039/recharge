@@ -159,7 +159,15 @@
             remark = #{remark}
         WHERE id = #{id}
     </update>
-    
+
+    <update id="updateRechargeRecodeByNotify" parameterType="map">
+        UPDATE recharge_recode SET
+            state = #{state},
+            notify_state = #{notifyState},
+            notify_time = #{notifyTime}
+        WHERE id = #{id}
+    </update>
+
     <!-- 批量修改数据 -->
     <update id="updateRechargeRecodes" parameterType="list">
         <foreach collection="list" index="index" item="item" separator=";">

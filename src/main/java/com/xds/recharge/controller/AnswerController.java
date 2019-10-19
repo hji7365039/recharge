@@ -11,6 +11,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import javax.servlet.http.HttpServletRequest;
+
 @Controller
 @RequestMapping("/answer")
 public class AnswerController {
@@ -34,11 +36,19 @@ public class AnswerController {
      */
     @ResponseBody
     @RequestMapping(value="handInAnswer", method = RequestMethod.POST)
-    public ResponseResult handInAnswer( @RequestBody HandInAnswerDto dto ){
+    public ResponseResult handInAnswer(@RequestBody HandInAnswerDto dto, HttpServletRequest request){
         if (dto.getAnswerIds()==null||dto.getAnswerIds().size()<=0){
             return ResponseResult.Error("答案不完整，请重新答题！");
         }
-        return ResponseResult.Success(answerService.handInAnswer(dto));
+
+        String openid="";
+        if(request.getSession().getAttribute("openid")==null){
+            return ResponseResult.Error("openid为空");
+        }else{
+            openid=(String)request.getSession().getAttribute("openid");
+            return ResponseResult.Success(answerService.handInAnswer(dto,openid));
+        }
+
     }
 
 

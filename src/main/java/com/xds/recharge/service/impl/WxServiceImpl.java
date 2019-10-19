@@ -4,6 +4,7 @@ import com.alibaba.fastjson.JSONObject;
 import com.xds.recharge.dao.WsgzOrderDao;
 import com.xds.recharge.dao.WxDao;
 import com.xds.recharge.dao.WxUserDao;
+import com.xds.recharge.dto.CheckUserDto;
 import com.xds.recharge.dto.GetAccessTokenDto;
 import com.xds.recharge.dto.WxUserDto;
 import com.xds.recharge.model.WxUser;
@@ -51,53 +52,56 @@ public class WxServiceImpl implements WxService {
     WxUserDao wxUserDao;
 
     @Override
-    public GetAccessTokenDto getAccessToken(String code,HttpServletRequest request) {
+    public JSONObject getAccessToken(String code,HttpServletRequest request ) {
         String url = getAccessTokenUrl + "?appid=" + appid + "&secret=" + secret + "&code=" + code + "&grant_type=" + grant_type;
         JSONObject result = JSONObject.parseObject(restTemplate.getForObject(url, String.class));
-        GetAccessTokenDto  getAccessTokenDto= new GetAccessTokenDto();
-        //判断openid
         String openid="";
-
-        //测试
-//        openid="123123123123";
-//        request.getSession().setAttribute("openid",openid);
-
-        if(result.getString("openid")!=null){
-            openid=result.getString("openid");
-
-            //判断是否关注蒋村街道微信公众号
-            if(isSubscribe(openid)){
-                getAccessTokenDto.setPage(-1);
-            }else{
-                request.getSession().setAttribute("openid",openid);
-
-                getAccessTokenDto.setAccessTokenResult(result.toJSONString());
-
-                //查看该openid是否存在我们数据库
-                WxUser wxUser= new WxUser();
-                wxUser.setOpenId(openid);
-                wxUser= wxUserDao.findWxUserByCondition(wxUser);
-                if(wxUser!=null){
-                    //判断是否已经参与答题
-                    int count= wsgzOrderDao.selectCountByMobileNo(wxUser.getMobileNo());
-                    if(count>0){
-                        //直接给最终页面
-                        getAccessTokenDto.setPage(2);
-                        getAccessTokenDto.setResult("答题活动机会只有一次哦!");
-
-                    }else{
-                        //直接跳转到答题页面
-                        getAccessTokenDto.setPage(1);
-                    }
-                }else{
-                    //否则，可以进入绑定手机号页面
-                    getAccessTokenDto.setPage(0);
-                }
-            }
-
+        if(result.getString("openid")!=null) {
+            openid = result.getString("openid");
+            request.getSession().setAttribute("openid",openid);
         }
-        return getAccessTokenDto;
+        return  result;
     }
+
+    @Override
+    public CheckUserDto checkUser(String openid){
+        CheckUserDto  checkUserDto= new CheckUserDto();
+        //判断是否关注蒋村街道微信公众号
+        if(!isSubscribe(openid)){
+            checkUserDto.setPage(-1);
+            checkUserDto.setCentent("请先绑定公众号再进行答题!");
+        }else {
+            //查看该openid是否存在我们数据库
+            WxUser wxUser = new WxUser();
+            wxUser.setOpenId(openid);
+            wxUser = wxUserDao.findWxUserByCondition(wxUser);
+            if (wxUser != null) {
+                //判断是否已经参与答题
+                int count = wsgzOrderDao.selectCountByMobileNo(wxUser.getMobileNo());
+                if (count > 0) {
+                    //直接给最终页面
+                    checkUserDto.setPage(-1);
+                    checkUserDto.setCentent("答题活动机会只有一次哦!");
+                } else {
+                    //直接跳转到答题页面
+                    checkUserDto.setPage(1);
+                }
+            } else {
+                //否则，可以进入绑定手机号页面
+                checkUserDto.setPage(0);
+            }
+        }
+        return checkUserDto;
+    }
+
+
+
+
+
+
+
+
+
 
     /**
      * 是否订阅
@@ -109,6 +113,7 @@ public class WxServiceImpl implements WxService {
         String url = getInfoUrl + "?access_token=" + result.getString("access_token") + "&openid=" + openid + "&lang=" + lang;
         // 判断用户是否订阅
         result = JSONObject.parseObject(restTemplate.getForObject(url, String.class));
+        System.out.println(result);
         return result.getInteger("subscribe") == 1 ? true :false;
     }
 

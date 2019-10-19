@@ -1,7 +1,7 @@
 package com.xds.recharge.service;
 
 import com.alibaba.fastjson.JSONObject;
-import com.xds.recharge.dto.GetAccessTokenDto;
+import com.xds.recharge.dto.CheckUserDto;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -10,6 +10,8 @@ import javax.servlet.http.HttpServletRequest;
  */
 public interface WxService {
 
-    GetAccessTokenDto getAccessToken(String code, HttpServletRequest request);
+    JSONObject getAccessToken(String code,HttpServletRequest request);
 
+
+    CheckUserDto checkUser(String openid);
 }

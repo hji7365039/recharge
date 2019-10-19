@@ -256,4 +256,21 @@ public class WsgzOrder {
     public void setRemark(String remark) {
         this.remark = remark;
     }
+
+    @Override
+    public String toString() {
+        return "WsgzOrder{" +
+                "id='" + id + '\'' +
+                ", openId='" + openId + '\'' +
+                ", wxName='" + wxName + '\'' +
+                ", mobileNo='" + mobileNo + '\'' +
+                ", score=" + score +
+                ", state=" + state +
+                ", createTime=" + createTime +
+                ", creator='" + creator + '\'' +
+                ", updateTime=" + updateTime +
+                ", updator='" + updator + '\'' +
+                ", remark='" + remark + '\'' +
+                '}';
+    }
 }
