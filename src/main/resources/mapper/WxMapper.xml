@@ -2,6 +2,12 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.xds.recharge.dao.WxDao">
+
+    <sql id="allColumns">
+        id, open_id, mobile_no, state, create_time, creator,
+        update_time, updator, remark
+    </sql>
+
     <insert id="insertWxUser">
         INSERT INTO wx_user(id, open_id, mobile_no, create_time, update_time)
         VALUE (#{id},#{openId},#{mobileNo},now(),now())
@@ -9,4 +15,12 @@
     <update id="updateByOpenId">
         update wx_user set mobile_no=#{mobileNo},update_time=now() where open_id=#{openId}
     </update>
+
+<select id="selecyByopenId" resultType="com.xds.recharge.model.WxUser">
+    select <include refid="allColumns" />
+    from wx_user
+    where open_id=#{openId}
+    and mobile_no is not null;
+</select>
+
 </mapper>

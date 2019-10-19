@@ -32,8 +32,8 @@ public class WxController {
      */
     @ResponseBody
     @RequestMapping(value="getAccessToken", method = RequestMethod.GET)
-    public JSONObject getAccessToken(String code,HttpServletRequest request){
-        return wxService.getAccessToken(code);
+    public ResponseResult getAccessToken(String code,HttpServletRequest request){
+        return ResponseResult.Success(wxService.getAccessToken(code,request)) ;
     }
 
 }

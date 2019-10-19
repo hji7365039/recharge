@@ -175,4 +175,9 @@
             #{id}
         </foreach>
     </delete>
+
+    <select id="selectCountByMobileNo" resultType="java.lang.Integer">
+        select  COALESCE(count(*),0) from wsgz_order
+        where mobile_no=#{mobileNo}
+    </select>
 </mapper>

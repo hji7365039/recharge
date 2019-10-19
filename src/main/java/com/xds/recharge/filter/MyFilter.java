@@ -23,20 +23,27 @@ public class MyFilter implements Filter {
         HttpServletResponse response= (HttpServletResponse) servletResponse;
         System.out.println(request.getRequestURI());
         //检查是否是登录页面
-        if(request.getRequestURI().equals("/wx/getAccessToken")){
+        if(request.getRequestURI().equals("/wx/getAccessToken")||request.getRequestURI().indexOf(".")>=0||request.getRequestURI().equals("/base/queryBalance")){
             filterChain.doFilter(servletRequest,servletResponse);
         }else{
-            filterChain.doFilter(servletRequest,servletResponse);
+            //检测用户是
+            HttpSession session =request.getSession();
+            System.out.println((String)session.getAttribute("openid"));
+            if(session.getAttribute("openid")==null){
+                try{
+                    response.sendRedirect("/wx/getAccessToken");
+                }catch (Exception e){}
+            }else{
+                String openid= (String)session.getAttribute("openid");
+                if(openid.equals("")){
+                    try{
+                        response.sendRedirect("/wx/getAccessToken");
+                    }catch (Exception e){}
+                }
+
+                filterChain.doFilter(servletRequest,servletResponse);
+            }
         }
-//        //检测用户是否登录
-//        HttpSession session =request.getSession();
-//        String status= (String) session.getAttribute("isLogin");
-//        if(status==null || !status.equals("true"))
-//        {
-//            try{
-//              response.sendRedirect("/wx/getAccessToken");
-//              }catch (Exception e){}
-//        }
     }
 
     @Override

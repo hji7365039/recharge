@@ -10,6 +10,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import javax.servlet.http.HttpServletRequest;
+
 @Controller
 @RequestMapping(value="/smsCode")
 public class SmsCodeController {
@@ -29,7 +31,17 @@ public class SmsCodeController {
 
     @ResponseBody
     @RequestMapping(value="/checkSmsCode", method = RequestMethod.GET)
-    public ResponseResult checkCode(String code,String mobileNo, String openid){
-        return ResponseResult.Success(checkCodeService.checkCode(code, mobileNo, openid));
+    public ResponseResult checkCode(String code,String mobileNo,HttpServletRequest request){
+        if(StringUtils.isBlank(mobileNo)){
+            return ResponseResult.Error("手机号为空");
+        }
+        String openid="";
+        if(request.getSession().getAttribute("openid")==null){
+            return ResponseResult.Error("openid为空");
+        }else{
+            openid=(String)request.getSession().getAttribute("openid");
+            return ResponseResult.Success(checkCodeService.checkCode(code, mobileNo, openid));
+        }
+
     }
 }
