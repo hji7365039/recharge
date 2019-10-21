@@ -51,12 +51,17 @@ public class AnswerServiceImpl implements AnswerService {
     }
 
     @Override
-    public HandInAnswerResponseDto handInAnswer(HandInAnswerDto dto, String openId){
+    public HandInAnswerResponseDto handInAnswer(HandInAnswerDto dto, String openId,String inSide){
         HandInAnswerResponseDto responseDto=new HandInAnswerResponseDto();
         Integer sumScore= answerDao.getSumScore(dto.getAnswerIds());
-        String centent="非常遗憾，您没有获得奖励，感谢您的参与，关注\"蒋村街道\"微信公众号，更多活动奖品等你拿！";
+        String centent="非常遗憾，您没有获得奖励，感谢您的参与，关注\"蒋村街道\"微信公众号，了解更多精彩内容！";
         responseDto.setState(0);
         responseDto.setCentent(centent);
+        //如果不在范围内，直接没有奖励
+        if(inSide.equals("false")){
+            return responseDto;
+        }
+
 
         //中奖状态,0未中奖,1已中奖
         int state=0;
@@ -65,25 +70,28 @@ public class AnswerServiceImpl implements AnswerService {
             state=1;
         }
 
+
         String orderId=UUID.randomUUID().toString();
 
-        //根据openid获取手机号
-        WxUser wxUser= new WxUser();
-        wxUser.setOpenId(openId);
-        wxUser=wxUserDao.findWxUserByCondition(wxUser);
-        if( !StringUtils.isBlank(wxUser.getMobileNo())){
-            //插入order表，记录中奖的分数、金额、openid
-            WsgzOrder wsgzOrder= new WsgzOrder();
-            wsgzOrder.setId(orderId);
-            wsgzOrder.setOpenId(openId);
-            wsgzOrder.setMobileNo(wxUser.getMobileNo());
-            wsgzOrder.setScore(sumScore);
-            wsgzOrder.setState(state);
-            wsgzOrder.setCreateTime(new Date());
-            wsgzOrder.setCreator("system");
-            wsgzOrderDao.insertWsgzOrder(wsgzOrder);
-            System.out.println(wsgzOrder.toString());
-        }
+        //暂时允许重复答题  doRecharge也注释了 不进行充值
+
+//        //根据openid获取手机号
+//        WxUser wxUser= new WxUser();
+//        wxUser.setOpenId(openId);
+//        wxUser=wxUserDao.findWxUserByCondition(wxUser);
+//        if( !StringUtils.isBlank(wxUser.getMobileNo())){
+//            //插入order表，记录中奖的分数、金额、openid
+//            WsgzOrder wsgzOrder= new WsgzOrder();
+//            wsgzOrder.setId(orderId);
+//            wsgzOrder.setOpenId(openId);
+//            wsgzOrder.setMobileNo(wxUser.getMobileNo());
+//            wsgzOrder.setScore(sumScore);
+//            wsgzOrder.setState(state);
+//            wsgzOrder.setCreateTime(new Date());
+//            wsgzOrder.setCreator("system");
+//            wsgzOrderDao.insertWsgzOrder(wsgzOrder);
+//            System.out.println(wsgzOrder.toString());
+//        }
         if(product!=null){
             doRecharge(openId,product,responseDto,orderId);
         }
@@ -113,10 +121,12 @@ public class AnswerServiceImpl implements AnswerService {
            rechargeRecode.setCreator("system");
            rechargeRecode.setState(0);
            rechargeRecode.setOrderId(orderId);
-           rechargeRecodeDao.insertRechargeRecode(rechargeRecode);
 
-           //进行充值操作
-           rechargeService.recharge(wxUser.getMobileNo(),sFaceValue,id);
+           //暂时允许重复答题操作
+//           rechargeRecodeDao.insertRechargeRecode(rechargeRecode);
+//
+//           //进行充值操作
+//           rechargeService.recharge(wxUser.getMobileNo(),sFaceValue,id);
 
            //返回成功
            responseDto.setState(1);

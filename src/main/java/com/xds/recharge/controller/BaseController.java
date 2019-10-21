@@ -2,7 +2,9 @@ package com.xds.recharge.controller;
 
 
 import com.xds.recharge.common.ResponseResult;
+import com.xds.recharge.dto.LatitudeAndLongitudeDto;
 import com.xds.recharge.dto.RechargeNotifyDto;
+import com.xds.recharge.service.CheckLocationService;
 import com.xds.recharge.service.NotifyService;
 import com.xds.recharge.service.RechargeService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,6 +12,8 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
+
+import javax.servlet.http.HttpServletRequest;
 
 
 @Controller
@@ -21,6 +25,9 @@ public class BaseController {
 
     @Autowired
     NotifyService notifyService;
+
+    @Autowired
+    CheckLocationService checkLocationService;
 
 
     @ResponseBody
@@ -47,9 +54,11 @@ public class BaseController {
 //    }
 
 
+    @ResponseBody
+    @RequestMapping(value="checkLocation", method = RequestMethod.GET)
+    public ResponseResult checkLocation(LatitudeAndLongitudeDto latitudeAndLongitudeDto,HttpServletRequest request){
 
-
-
-
+        return ResponseResult.Success(checkLocationService.checkLocation(latitudeAndLongitudeDto,request));
+    }
 
 }

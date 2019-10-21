@@ -77,3 +77,8 @@ channel:
  queryBalanceURL: http://39.108.59.67:8160/unicomAync/queryBalance.do
  rechargeURL: http://39.108.59.67:8160/telephone/buy.do
 
+location:
+  min_lat: 30.24
+  max_lat: 30.32
+  min_lng: 120
+  max_lng: 120.13

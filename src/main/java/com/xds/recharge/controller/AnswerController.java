@@ -42,11 +42,13 @@ public class AnswerController {
         }
 
         String openid="";
+        String inSide="";
         if(request.getSession().getAttribute("openid")==null){
             return ResponseResult.Error("openid为空");
         }else{
             openid=(String)request.getSession().getAttribute("openid");
-            return ResponseResult.Success(answerService.handInAnswer(dto,openid));
+            inSide=(String)request.getSession().getAttribute("inSide");
+            return ResponseResult.Success(answerService.handInAnswer(dto,openid,inSide));
         }
 
     }

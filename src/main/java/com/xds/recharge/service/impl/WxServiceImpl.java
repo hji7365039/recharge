@@ -69,7 +69,7 @@ public class WxServiceImpl implements WxService {
         //判断是否关注蒋村街道微信公众号
         if(!isSubscribe(openid)){
             checkUserDto.setPage(-1);
-            checkUserDto.setCentent("请先绑定公众号再进行答题!");
+            checkUserDto.setCentent("请先关注蒋村街道微信公众号再进行答题！");
         }else {
             //查看该openid是否存在我们数据库
             WxUser wxUser = new WxUser();
