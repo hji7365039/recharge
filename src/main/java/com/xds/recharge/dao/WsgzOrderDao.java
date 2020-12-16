@@ -10,4 +10,6 @@ public interface WsgzOrderDao {
 
     int insertWsgzOrder(WsgzOrder wsgzOrder);
 
+    Integer selectCountByOpenId(@Param("openId") String openId);
+
 }

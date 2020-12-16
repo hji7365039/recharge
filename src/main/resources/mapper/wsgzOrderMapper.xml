@@ -180,4 +180,9 @@
         select  COALESCE(count(*),0) from wsgz_order
         where mobile_no=#{mobileNo}
     </select>
+
+    <select id="selectCountByOpenId" resultType="java.lang.Integer">
+        select  COALESCE(count(*),0) from wsgz_order
+        where open_id=#{openId}
+    </select>
 </mapper>
